@@ -4,6 +4,10 @@
     margin: 0;
 }
 
+//@include m.flexbox(row, center, center); tanımlamanın anlamı olarak :)
+
+//Mixin, bir stil talimatının bir parçası olarak tanımlanmış bir bloktur ve stil yönergelerini tekrar kullanmayı sağlar. m.flexbox(row, center, center) mixin çağrısı, bir flexbox düzenini yatay (row) hizalama ve dikey (center) hizalama ile merkezlemek için kullanılır.
+
 @mixin flexbox(
     $direction: row,
     $justify-content: flex-start,

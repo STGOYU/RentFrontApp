@@ -5,10 +5,10 @@ $breakpoint: 992px;
 $breakpointsm:576px;
 
 .header {
-    @include m.flexbox($align-items: stretch);
+    @include m.flexbox($align-items: stretch); //flexbox degerlerinden sadece align items degisti digerleri kullanilacak
     background-color: v.$color4;
     border-radius: 5px;
-    box-shadow: 0 0 5px 1px v.$color1-4;
+    box-shadow: 0 0 5px 1px v.$color1-4; //birinci rengin dorduncu versionu
 
     @media (max-width: $breakpoint) {
         @include m.flexbox(column, space-between, stretch);
