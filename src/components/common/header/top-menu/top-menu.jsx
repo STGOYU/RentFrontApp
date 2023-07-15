@@ -9,10 +9,10 @@ import {
 import { MdEmail } from "react-icons/md";
 import { constants } from "../../../../constants";
 import "./top-menu.scss";
+
 const {
     website: { email, phone, instagram, facebook, twitter, linkedin, youtube },
 } = constants;
-
 
 const listItems = [
     {
@@ -41,6 +41,7 @@ const listItems = [
         icon: <BsYoutube />,
     },
 ];
+
 const TopMenu = () => {
     return (
         <div className="top-menu">
@@ -76,4 +77,5 @@ const TopMenu = () => {
         </div>
     );
 };
+
 export default TopMenu;

@@ -4,9 +4,7 @@
     margin: 0;
 }
 
-//@include m.flexbox(row, center, center); tanımlamanın anlamı olarak :)
-
-//Mixin, bir stil talimatının bir parçası olarak tanımlanmış bir bloktur ve stil yönergelerini tekrar kullanmayı sağlar. m.flexbox(row, center, center) mixin çağrısı, bir flexbox düzenini yatay (row) hizalama ve dikey (center) hizalama ile merkezlemek için kullanılır.
+// mixin'ler scss'lerin fonksiyonlaridir. Icerisine javascripteki gibi parametre alabilir, ayrica degiskenler de uretilebilir. Parametlere default (baslangic degerleri) degerler de atanabilir.
 
 @mixin flexbox(
     $direction: row,
@@ -28,9 +26,9 @@
     $repeat: no-repeat
 ) {
     background-image: url($url);
-    background-repeat: $repeat;
     background-size: $size;
     background-position: $position;
+    background-repeat: $repeat;
 }
 
 @mixin watermark($bgcolor, $opacity: 0.8) {

@@ -6,16 +6,14 @@ const reservationSlice = createSlice({
         vehicle: null,
         reservations: null,
     },
-    reducers:{
-        setVehicle:(state, action )=> {
-            state.vehicle=action.payload;
-
+    reducers: {
+        setVehicle: (state, action) => {
+            state.vehicle = action.payload;
         },
         setReservations: (state, action) => {
-            state.reservations =action.payload;
+            state.reservations = action.payload;
         },
     }
-    
 });
 
 export const { setReservations, setVehicle } = reservationSlice.actions;

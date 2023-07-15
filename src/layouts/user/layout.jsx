@@ -1,15 +1,20 @@
-import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const UserLayout = () => {
-    // merkezi state git kullanici yoksa kullaniciya izin verme forbidden yada login sayfasina yonlendir...
-    const {isLoggedIn} = useSelector((state) => state.auth);
-    console.log(isLoggedIn);
+    // merkezi state'e git ve isLoggedIn bilgisini al
+    // go to central state and get isLoggedIn information
+    const { isLoggedIn } = useSelector((state) => state.auth);
 
-    if(isLoggedIn) return <Navigate to={"/login"}/>
-    return <>
-        <Outlet/>
-    </>;
+    // TODO: isLoggedIn === false ise login sayfasina yonlendir
+    // if there is isLoggedIn === false, redirect to login page
+    if (isLoggedIn) return <Navigate to={"/login"} />
+
+    return (
+        <>
+            <Outlet />
+        </>
+    );
 };
 
 export default UserLayout;

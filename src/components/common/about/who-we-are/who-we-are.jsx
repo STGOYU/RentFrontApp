@@ -17,24 +17,26 @@ const WhoWeAre = () => {
                         <div className="border-top"></div>
                     </div>
                 </Col>
-                <Col lg={9}>
+                <Col lg={9} className="who-we-are-content">
                     <div className="who-we-are-info">
                         <h2>{about.title}</h2>
                         <p>{about.desc[0]}</p>
                     </div>
                 </Col>
                 {/* ------- */}
-                <Col lg={9}>
+                <Col lg={9} className="who-we-are-content">
                     <p>{about.desc[1]}</p>
                 </Col>
                 <Col lg={3}>
-                    <img
-                        src="/img/about_2.jpg"
-                        alt="Who We Are"
-                        className="right"
-                    />
-                    <div className="border-right"></div>
-                    <div className="border-bottom"></div>
+                    <div className="img-col">
+                        <img
+                            src="/img/about_2.jpg"
+                            alt="Who We Are"
+                            className="right"
+                        />
+                        <div className="border-right"></div>
+                        <div className="border-bottom"></div>
+                    </div>
                 </Col>
             </Row>
         </Container>

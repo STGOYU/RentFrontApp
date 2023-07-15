@@ -2,13 +2,13 @@
 @use "../../../styles/mixins" as m;
 
 $breakpoint: 992px;
-$breakpointsm:576px;
+$breakpointsm: 576px;
 
 .header {
-    @include m.flexbox($align-items: stretch); //flexbox degerlerinden sadece align items degisti digerleri kullanilacak
+    @include m.flexbox($align-items: stretch);
     background-color: v.$color4;
     border-radius: 5px;
-    box-shadow: 0 0 5px 1px v.$color1-4; //birinci rengin dorduncu versionu
+    box-shadow: 0 0 5px 1px v.$color1-4;
 
     @media (max-width: $breakpoint) {
         @include m.flexbox(column, space-between, stretch);
@@ -42,37 +42,36 @@ $breakpointsm:576px;
             }
         }
 
-@media (max-width:$breakpoint){
-    border-radius: 0;
-    -webkit-border-radius: 0;
-    -moz-border-radius: 0;
-    -ms-border-radius: 0;
-    -o-border-radius: 0;
-}
-@media (max-width:$breakpointsm){
-    @include m.flexbox(row,center,center);
-    img {
-        height: 60px;
-    }
-    .logo_text{
-        font-size: 2rem;
-        line-height: 2rem;
+        @media (max-width: $breakpoint) {
+            border-radius: 0;
+        }
 
-    }
-    span{
-        font-size: 2.5rem;
-    }
-    p{
-        line-height: 0.8rem;
-        font-size: 0.7rem;
-        margin: 0;
-    }
-}
+        @media (max-width: $breakpointsm) {
+            @include m.flexbox(row, center, center);
 
+            img {
+                height: 60px;
+            }
 
+            .logo_text {
+                font-size: 2rem;
+                line-height: 2rem;
+
+                span {
+                    font-size: 2.5rem;
+                }
+
+                p {
+                    line-height: 0.8rem;
+                    font-size: 0.4rem;
+                    margin: 0;
+                }
+            }
+        }
     }
-}
-.menus{
-    @include m.flexbox(column,center,stretch);
-    flex: 1;
+
+    .menus {
+        @include m.flexbox(column, center, stretch);
+        flex: 1;
+    }
 }

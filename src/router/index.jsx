@@ -40,23 +40,27 @@ const router = createBrowserRouter([
                 element: <AboutPage />,
             },
             {
+                path: "contact",
+                element: <ContactPage />,
+            },
+            {
                 path: "privacy-policy",
-                element: <PrivacyPolicyPage/>
+                element: <PrivacyPolicyPage />,
             },
             {
                 path: "vehicles",
-                children:[
+                children: [
                     {
-                        index:true,
-                        element:<VehiclesPage />,
+                        index: true,
+                        element: <VehiclesPage />,
                     },
                     {
-                        path:"vehicleId",
-                        element: <VehicleDetailsPage/>
-                    }
-                ]
+                        path: ":vehicleId",
+                        element: <VehicleDetailsPage />,
+                    },
+                ],
             },
-            //USER ROUTES
+            // USER ROUTES
             {
                 path: "user",
                 element: <UserLayout />,
@@ -100,62 +104,71 @@ const router = createBrowserRouter([
     // ADMIN ROUTES
     {
         path: "/admin",
-        element: <AdminLayout/>,
+        element: <AdminLayout />,
         children: [
             {
                 index: true,
-                element:<AdminDashboard/>
+                element: <AdminDashboard />,
             },
             {
-                path: "contactMessageId",
-                element: <AdminContactMessageDetailsPage/>
-            }
-        ]
-
-    },
-    {
-        path: "reservations",
-        children: [
-            {
-                index: true,
-                element: <AdminReservationsPage />,
+                path: "contact-messages",
+                children: [
+                    {
+                        index: true,
+                        element: <AdminContactMessagesPage />,
+                    },
+                    {
+                        path: ":contactMessageId",
+                        element: <AdminContactMessageDetailsPage />,
+                    },
+                ],
             },
             {
-                path: ":reservationId",
-                element: <AdminReservationDetailsPage />,
-            }
-        ]
-    },
-    {
-        path: "users",
-        children: [
-            {
-                index: true,
-                element: <AdminUsersPage />,
+                path: "reservations",
+                children: [
+                    {
+                        index: true,
+                        element: <AdminReservationsPage />,
+                    },
+                    {
+                        path: ":reservationId",
+                        element: <AdminReservationDetailsPage />,
+                    },
+                ],
             },
             {
-                path: ":userId",
-                element: <AdminUserDetailsPage />,
+                path: "users",
+                children: [
+                    {
+                        index: true,
+                        element: <AdminUsersPage />,
+                    },
+                    {
+                        path: ":userId",
+                        element: <AdminUserDetailsPage />,
+                    },
+                ],
+            },
+            {
+                path: "vehicles",
+                children: [
+                    {
+                        index: true,
+                        element: <AdminVehiclesPage />,
+                    },
+                    {
+                        path: "new",
+                        element: <AdminNewVehiclePage />,
+                    },
+                    {
+                        path: ":vehicleId",
+                        element: <AdminVehicleDetailsPage />,
+                    },
+                ],
             },
         ],
     },
-    {
-        path: "vehicles",
-        children: [
-            {
-                index: true,
-                element: <AdminVehiclesPage />,
-            },
-            {
-                path: "new",
-                element: <AdminNewVehiclePage />,
-            },
-            {
-                path: ":vehicleId",
-                element: <AdminVehicleDetailsPage />,
-            },
-        ],
-    },// ERROR ROUTES
+    // ERROR ROUTES
     {
         path: "/forbidden",
         element: <ErrorPage />,
