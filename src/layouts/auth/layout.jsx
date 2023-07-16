@@ -23,8 +23,14 @@ const AuthLayout = () => {
                         title={website.name}
                     />
                     <div className="toolbar">
-                        <GiCancel onClick={() => navigate(-1)} />
-                        <GiHomeGarage onClick={() => navigate(routes.home)} />
+                        <GiCancel
+                            title="Go Back"
+                            onClick={() => navigate(-1)}
+                        />
+                        <GiHomeGarage
+                            title="Go Home Page"
+                            onClick={() => navigate(routes.home)}
+                        />
                     </div>
                 </Col>
                 <Link to={routes.home} className="logo">
