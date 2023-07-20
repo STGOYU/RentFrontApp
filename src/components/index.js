@@ -41,6 +41,7 @@ import DetailsPanel from "./common/vehicles/details-panel/details-panel";
 import PopularVehicles from "./common/vehicles/popular-vehicles/popular-vehicles";
 import VehicleCard from "./common/vehicles/vehicle-card/vehicle-card";
 
+
 export {
     // ADMIN COMPONENTS
     AdminCarousel,

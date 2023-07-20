@@ -1,6 +1,7 @@
 import ReactInputMask from "react-input-mask-next";
 // import { functions } from "../../../utils";
 import { FloatingLabel, Form } from "react-bootstrap";
+import { utils } from "../../../utils";
 
 const CustomForm = (props) => {
     const {
@@ -20,7 +21,7 @@ const CustomForm = (props) => {
 
     let properties = {
         ...formik.getFieldProps(name),
-        // ...functions.validCheck(name, formik),
+        ...utils.functions.validCheck(name, formik),
         disabled,
     };
 
@@ -60,7 +61,7 @@ const CustomForm = (props) => {
                     <Form.Label>{label}</Form.Label>
                     <Form.Control {...properties} />
                     <Form.Control.Feedback type="invalid">
-                        {formik.errors[name]}
+                        *{formik.errors[name]}
                     </Form.Control.Feedback>
                 </Form.Group>
             );
