@@ -1,4 +1,5 @@
 import axios from "axios";
+import { encryptedLocalStorage } from "../encrypt-storage/encrypt-storage";
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
 // COMMON ENDPOINTS
@@ -12,7 +13,13 @@ export const register = async (payload) => {
 };
 
 // USER ENDPOINTS
-export const getUser = () => { };
+export const getUser = async () => {
+    const response = await axios.get(`${API_URL}/user`, {
+        headers: {
+            Authorization: `Bearer ${encryptedLocalStorage.getItem("pickanddrivetoken")}`
+        }
+    })
+ };
 export const updatePassword = () => { };
 export const updateUser = () => { };
 

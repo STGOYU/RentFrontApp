@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginFailure, loginSuccess } from "../../../store";
@@ -7,6 +7,10 @@ import { useFormik } from "formik";
 import { services } from "../../../services/";
 import { utils } from "../../../utils";
 import { CustomForm, PasswordInput } from "../../../components";
+import { constants } from "../../../constants";
+import "./style.scss";
+
+const {routes} = constants;
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -19,7 +23,8 @@ const LoginPage = () => {
       // istegini endpointe gonder
       const data = await services.user.login(values);
 
-      services.encryptedLocalStorage.setItem("token", data.token);
+      services.encryptedLocalStorage.setItem("pickanddrivetoken", data.token);
+      
       // const responseUser = await services.user.getUser();
       // token ile kullanici bilgilerini al
       // kullanici bilgilerini merkezi state'e kaydet
@@ -40,7 +45,7 @@ const LoginPage = () => {
   });
 
   return (
-    <Form onSubmit={formik.handleSubmit}>
+    <Form noValidate onSubmit={formik.handleSubmit} className="login-form">
       {/* <Form.Group className="mb-3">
                 <Form.Label>Email Address</Form.Label>
                 <Form.Control
@@ -83,11 +88,19 @@ const LoginPage = () => {
 
       {/* CUSTOM FORM */}
 
-      <Button>LOGIN</Button>
-      <p>OR</p>
-      <Button>REGISTER</Button>
-    </Form>
-  );
+      <Button
+                type="submit"
+                disabled={!(formik.dirty && formik.isValid) || loading}>
+                {loading && <Spinner animation="border" size="sm" />} LOGIN
+            </Button>
+            <p>OR</p>
+            <Button
+                onClick={() => navigate(routes.register)}
+                disabled={loading}>
+                REGISTER
+            </Button>
+        </Form>
+    );
 };
 
 export default LoginPage;
