@@ -68,7 +68,8 @@ const LoginPage = () => {
             <Button
                 type="submit"
                 disabled={!(formik.dirty && formik.isValid) || loading}>
-                {loading && <Spinner animation="border" size="sm" />} LOGIN
+                {loading && <Spinner animation="border" size="sm" />} 
+                LOGIN
             </Button>
             <p>OR</p>
             <Button
