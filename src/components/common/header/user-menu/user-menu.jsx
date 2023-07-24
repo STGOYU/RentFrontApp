@@ -15,7 +15,7 @@ const UserMenu = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // TODO: logou fonksiyonu yazılacak
+    // TODO: logou fonksiyonu sonra yazılacak
     const handleLogout = () => {
         utils.functions
             .swalQuestion("Logout", "Are you sure you want to logout?")

@@ -13,6 +13,10 @@ import {
     InputGroup,
     Spinner,
 } from "react-bootstrap";
+import { services } from "../../../../services";
+import { constants } from "../../../../constants";
+
+const { routes } = constants;
 
 const formItems = [
     {
@@ -94,14 +98,40 @@ const BookingForm = () => {
 
     const navigate = useNavigate();
 
-    const onSubmit = async () => {
+    const onSubmit = async (values) => {
         setLoading(true);
+
+        const {
+            pickUpDate,
+            pickUpTime,
+            dropOffDate,
+            dropOffTime,
+            pickUpLocation,
+            dropOffLocation,
+        } = values;
+
+        console.log(values);
+
+        const dto = {
+            pickUpTime: utils.functions.combineDateAndTime(
+                pickUpDate,
+                pickUpTime
+            ),
+            dropOffTime: utils.functions.combineDateAndTime(
+                dropOffDate,
+                dropOffTime
+            ),
+            pickUpLocation: pickUpLocation,
+            dropOffLocation: dropOffLocation,
+        };
+
         try {
-            // TODO: Create reservation
+            await services.reservation.createReservation(vehicle.id, dto);
             utils.functions.swalToast(
                 "Reservation created successfully!",
                 "success"
             );
+            navigate(routes.userReservations);
         } catch (error) {
             utils.functions.swalToast(
                 "There is an error occurred during rent operation!",
@@ -113,9 +143,50 @@ const BookingForm = () => {
     };
 
     const handleAvailability = async () => {
+        if (!isLoggedIn || !formik.dirty) return;
+        // TODO: Formik dirty kontrolu yapilacak
+
         setLoading(true);
+
+        const { pickUpDate, pickUpTime, dropOffDate, dropOffTime } =
+            formik.values;
+
+        const dto = {
+            carId: vehicle.id,
+            pickUpDateTime: utils.functions.combineDateAndTime(
+                pickUpDate,
+                pickUpTime
+            ),
+            dropOffDateTime: utils.functions.combineDateAndTime(
+                dropOffDate,
+                dropOffTime
+            ),
+        };
+
         try {
+            if (!utils.functions.checkDates(formik.values))
+                return utils.functions.swalToast(
+                    "Pick up date must be minimum 1 hour before drop off date!",
+                    "error"
+                );
+            // TODO: Gecmise yonelik bir tarih secilmemeli
+            const data = await services.reservation.isVehicleAvailable(dto);
+            console.log(data);
+            const { available, totalPrice } = data;
+            setTotalPrice(totalPrice);
+            setVehicleAvailable(available);
+            if (!available) {
+                utils.functions.swalToast(
+                    "Vehicle is not available for the selected dates!",
+                    "error"
+                );
+            }
+            // TODO: Eger arac uygun degilse, tekrardan istek gonderilmemesi icin islem yapilmali
         } catch (error) {
+            utils.functions.swalToast(
+                "There is an error occurred during rent operation!",
+                "error"
+            );
         } finally {
             setLoading(false);
         }
@@ -130,12 +201,14 @@ const BookingForm = () => {
     return (
         <div className="booking-form">
             <SectionHeader title1="Book" title2="Now" />
+            {/* show alert if user not logged in - eger kullanici giris yapmadiysa uyari goster */}
             {!isLoggedIn && (
                 <Alert>
                     Please login first to check if the car is available
                 </Alert>
             )}
             <Form noValidate onSubmit={formik.handleSubmit}>
+                {/* check if user logged in, otherwise make reservation disabled - kullanicinin giris yapip yapmadigini kontrol et, aksi halde rezervasyonu erisilemez kil */}
                 <fieldset disabled={!isLoggedIn}>
                     {formItems.slice(0, 2).map((item) => (
                         <CustomForm key={item.name} formik={formik} {...item} />
@@ -167,11 +240,11 @@ const BookingForm = () => {
                         Check If Available
                     </Button>
                 </fieldset>
+                {/*  check both vehicle available and user logged in, otherwise make payment section invisible - kullanicinin giris yaptigini ve aracin uygun oldugunu kontrol et, aksi halde odeme kismi gorunmez olsun */}
                 <fieldset
-                // className={`mt-5 ${
-                //     (vehicleAvailable && isLoggedIn) || "d-none"
-                // }`}
-                >
+                    className={`mt-5 ${
+                        (vehicleAvailable && isLoggedIn) || "d-none"
+                    }`}>
                     <Alert variant="success">
                         <h2>Total Price: ${totalPrice}</h2>
                         {formItems.slice(6, 10).map((item) => (

@@ -3,7 +3,7 @@ import axios from 'axios';
 const API_URL = import.meta.env.VITE_APP_API_URL;
 
 // COMMON ENDPOINTS
-export const getVehicleById = (id) => { 
+export const getVehicleById = async (id) => {
     const response = await axios.get(`${API_URL}/car/visitors/${id}`);
     return response.data;
 };

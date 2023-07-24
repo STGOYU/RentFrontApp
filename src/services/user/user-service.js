@@ -26,7 +26,10 @@ export const getUser = async () => {
     //     return response.data;
     // })
  };
-export const updatePassword = () => { };
+ export const updatePassword = async (dto) => {
+    const response = await axios.patch(`${API_URL}/user/auth`, dto, services.authHeader());
+    return response.data;
+};
 export const updateUser = () => { };
 
 // ADMIN ENDPOINTS

@@ -1,5 +1,5 @@
 // FUNCTIONS
-import { validCheck, swalQuestion, swalToast } from "./functions/functions";
+import { validCheck, swalQuestion, swalToast, checkDates, checkExpireDate, combineDateAndTime, formatDateTime, getCurrentDate, getDate, getTime, } from "./functions/functions";
 
 // INITIAL VALUES
 import { loginFormInitialValues, registerFormInitialValues, adminNewVehicleFormInitialValues, bookingFormInitialValues, contactFormInitialValues, userPasswordFormInitialValues } from "./initial-values/initial-values";
@@ -14,7 +14,14 @@ export const utils = {
     functions: {
         validCheck,
         swalQuestion,
-        swalToast
+        swalToast,
+        checkDates,
+        checkExpireDate,
+        combineDateAndTime,
+        formatDateTime,
+        getCurrentDate,
+        getDate,
+        getTime,
     },
     initialValues: {
         loginFormInitialValues,
