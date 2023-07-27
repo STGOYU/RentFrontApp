@@ -25,8 +25,24 @@ export const isVehicleAvailable = async (payload) => {
 };
 
 // ADMIN ENDPOINTS
-export const deleteReservation = () => { };
-export const downloadReservationReports = () => { };
+export const deleteReservation = async (id) => {
+    const response = await axios.delete(`${API_URL}/reservations/admin/${id}/auth`, services.authHeader());
+    return response.data;
+};
+
+export const downloadReservationReports = async () => {
+    const token = services.encryptedLocalStorage.getItem("pickanddrivetoken");
+    const response = await axios.get(`${API_URL}/excel/download/reservations`,
+        {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            responseType: "blob"
+        }
+    );
+    return response.data;
+};
+
 export const getReservationByIdAdmin = () => { };
 export const getReservationsByPageAdmin = () => { };
 export const updateReservation = () => { };

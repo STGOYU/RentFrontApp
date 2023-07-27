@@ -6,6 +6,7 @@ import { utils } from "../../../utils";
 import { services } from "../../../services";
 import { Loading } from "../../../components";
 import { useNavigate } from "react-router-dom";
+import "./style.scss";
 
 const { routes } = constants;
 
@@ -34,8 +35,28 @@ const AdminUsersPage = () => {
         setDownloading(true);
         try {
             const download = await services.user.downloadUserReports();
+            // response'dan gelen blob'u kullanarak bir tane URL olustur ve onu indir
+            /*
+            <body>
+                <a href={url} download="users.xlsx" />;
+            </body>;
+            */
+            const url = window.URL.createObjectURL(download);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "users.xlsx";
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            utils.functions.swalToast(
+                "Your download will start soon",
+                "success"
+            );
         } catch (error) {
-            console.log(error);
+            utils.functions.swalToast(
+                "There was an error while downloading",
+                "error"
+            );
         } finally {
             setDownloading(false);
         }
@@ -43,7 +64,7 @@ const AdminUsersPage = () => {
 
     const handlePerPageRowsChange = async (newPerPage, page) => {
         try {
-            const data = await services.user.getUsersByPage(page, newPerPage);
+            const data = await services.user.getUsersByPage(page - 1, newPerPage);
             setUserData(data.content);
             setPerPage(newPerPage);
         } catch (error) {
@@ -60,7 +81,7 @@ const AdminUsersPage = () => {
     };
 
     const handleRowClicked = (row) => {
-        console.log(row);
+     //   console.log(row);
         navigate(`${routes.adminUsers}/${row.id}`);
     };
 
