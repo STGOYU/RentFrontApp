@@ -1,3 +1,7 @@
+//import { Link } from "react-router-dom";
+
+const API_URL = import.meta.env.VITE_APP_API_URL;
+
 export const adminUserColumns = [
     {
         name: "First Name",
@@ -34,4 +38,51 @@ export const adminReservationsColumns = [
         name: "Price",
         selector: (row) => `$ ${row?.totalPrice}`
     }
+];
+
+export const adminContactMessagesColumns = [
+    {
+        name: "Sender Name",
+        selector: (row) => row?.name,
+        sortable: true
+    },
+    {
+        name: "Sender Email",
+        selector: (row) => row?.email,
+        sortable: true
+    },
+    {
+        name: "Subject",
+        selector: (row) => row?.subject,
+        sortable: true
+    }
+];
+
+export const adminVehiclesColumns = [
+    {
+        name: "Image",
+        selector: (row) => (
+            <img
+                src={`${API_URL}/files/display/${row?.image[0]}`}
+                alt={row?.model}
+                title={row?.model}
+                width={100}
+                style={{
+                    pointerEvents: "none",
+                }}
+            />
+        ),
+    },
+    {
+        name: "Model",
+        selector: (row) => row?.model,
+    },
+    {
+        name: "Age",
+        selector: (row) => row?.age,
+    },
+    {
+        name: "Price/hour",
+        selector: (row) => `$ ${row?.pricePerHour}`,
+    },
 ];

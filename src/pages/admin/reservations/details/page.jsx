@@ -1,18 +1,19 @@
 import { useEffect, useState } from "react";
 import { constants } from "../../../../constants";
-import { Form, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useFormik } from "formik";
 import { utils } from "../../../../utils";
 import { services } from "../../../../services";
-import { CustomForm, Loading } from "../../../../components";
-import { Alert, Button, ButtonGroup, Row, Spinner } from "react-bootstrap";
+import { CustomForm, Loading, SectionHeader } from "../../../../components";
+import { Button, ButtonGroup, Col, Form, Row, Spinner } from "react-bootstrap";
+import "./style.scss";
 
 const { routes } = constants;
 
 const AdminReservationDetailsPage = () => {
     const [loading, setLoading] = useState(true);
     const [deleting, setDeleting] = useState(false);
-    const [saving, setSaving] = useState(false);
+    const [updating, setUpdating] = useState(false);
     const [vehicles, setVehicles] = useState([]);
     const { reservationId } = useParams();
     const navigate = useNavigate();
@@ -79,19 +80,37 @@ const AdminReservationDetailsPage = () => {
     });
 
     const onSubmit = async (values) => {
-        setSaving(true);
-        if (!values.password) delete values.password;
+        setUpdating(true);
+
         const dto = {
-            ...values,
-            builtIn: false, // bazi verilerin silinmesini onlemek amaciyla
+            pickUpTime: utils.functions.combineDateAndTime(
+                values.pickUpDate,
+                values.pickUpTime
+            ),
+            dropOffTime: utils.functions.combineDateAndTime(
+                values.dropOffDate,
+                values.dropOffTime
+            ),
+            pickUpLocation: values.pickUpLocation,
+            dropOffLocation: values.dropOffLocation,
+            status: values.status,
         };
 
         try {
-            await services.user.updateUserAdmin(userId, dto);
-            utils.functions.swalToast("User updated successfully.", "success");
-        } catch (error) {
+            await services.reservation.updateReservation(
+                values.carId,
+                reservationId,
+                dto
+            );
+
             utils.functions.swalToast(
-                "There was an error updating the user.",
+                "Reservation updated successfully.",
+                "success"
+            );
+        } catch (error) {
+            console.log(error);
+            utils.functions.swalToast(
+                "There was an error updating the data.",
                 "error"
             );
         } finally {
@@ -146,7 +165,6 @@ const AdminReservationDetailsPage = () => {
                     reservationId
                 );
             const vehiclesData = await services.vehicle.getVehicles();
-
             const dto = {
                 ...reservationsData,
                 pickUpDate: utils.functions.getDate(
@@ -178,70 +196,63 @@ const AdminReservationDetailsPage = () => {
     }, []);
 
     return loading ? (
-        <Loading height={500} />
+        <Loading />
     ) : (
-        <Form
-            noValidate
-            onSubmit={formik.handleSubmit}
-            className="admin-user-details-form mt-5">
-            <fieldset disabled={formik.values.builtIn}>
-                <Row className="row-cols-1 row-cols-md-2 row-cols-lg-3">
-                    {formItems.map((item) => (
-                        <CustomForm key={item.name} formik={formik} {...item} />
-                    ))}
-                </Row>
-                <Form.Check
-                    label="Customer"
-                    value="Customer"
-                    type="checkbox"
-                    name="roles"
-                    checked={formik.values.roles.includes("Customer")}
-                    onChange={() => handleChangeRoles("Customer")}
-                />
-                <Form.Check
-                    label="Admin"
-                    value="Administrator"
-                    type="checkbox"
-                    name="roles"
-                    checked={formik.values.roles.includes("Administrator")}
-                    onChange={() => handleChangeRoles("Administrator")}
-                />
-            </fieldset>
-            {formik.values.builtIn && (
-                <Alert variant="warning">
-                    Built-in accounts cannot be deleted or updated.
-                </Alert>
-            )}
-            <div className="text-end">
-                <ButtonGroup>
-                    <Button onClick={() => navigate(-1)}>Cancel</Button>
-                    {!formik.values.builtIn && (
-                        <>
-                            <Button
-                                type="submit"
-                                disabled={
-                                    !(formik.dirty && formik.isValid) ||
-                                    saving
-                                }>
-                                {saving && (
-                                    <Spinner animation="border" size="sm" />
-                                )}{" "}
-                                Save
-                            </Button>
-                            <Button
-                                variant="danger"
-                                onClick={handleDelete}
-                                disabled={deleting}>
-                                {deleting && (
-                                    <Spinner animation="border" size="sm" />
-                                )}{" "}
-                                Delete
-                            </Button>
-                        </>
-                    )}
-                </ButtonGroup>
-            </div>
-        </Form>
+        <>
+            <SectionHeader title1="reservation" title2="details" />
+            <Form
+                noValidate
+                onSubmit={formik.handleSubmit}
+                className="admin-reservation-details-page">
+                <div className="forms-container">
+                    <Row>
+                        <h2>reservation id: {reservationId}</h2>
+                    </Row>
+                    <Row>
+                        {formItems.map((item) => (
+                            <Col key={item.name} md={6} lg={4}>
+                                <CustomForm formik={formik} {...item} />
+                            </Col>
+                        ))}
+                    </Row>
+                </div>
+                <div className="buttons-container">
+                    <div className="go-to-customer">
+                        <Button
+                            as={Link}
+                            to={`${routes.adminUsers}/${formik.values.userId}`}>
+                            Go To Customer
+                        </Button>
+                    </div>
+                    <ButtonGroup>
+                        <Button
+                            onClick={() =>
+                                navigate(`${routes.adminReservations}`)
+                            }>
+                            cancel
+                        </Button>
+                        <Button
+                            type="submit"
+                            disabled={
+                                !(formik.dirty && formik.isValid) || updating
+                            }>
+                            {updating && (
+                                <Spinner animation="border" size="sm" />
+                            )}{" "}
+                            save
+                        </Button>
+                        <Button
+                            disabled={deleting || updating}
+                            onClick={handleDelete}>
+                            {deleting && (
+                                <Spinner animation="border" size="sm" />
+                            )}{" "}
+                            delete
+                        </Button>
+                    </ButtonGroup>
+                </div>
+            </Form>
+        </>
     );
 };
 
