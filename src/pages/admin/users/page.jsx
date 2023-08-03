@@ -35,7 +35,7 @@ const AdminUsersPage = () => {
     setDownloading(true);
     try {
       const download = await services.user.downloadUserReports();
-      // response'dan gelen blob'u kullanarak bir tane URL olustur ve onu indir
+      // response'dan gelen blob'u kullanarak bir tane URL olustur ve onu indirilir
       /*
             <body>
                 <a href={url} download="users.xlsx" />;
